@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+</head>
+<script src="pixi.js"></script>
+
+<body>
+    <script type="text/javascript">
+        let type = "WebGL"
+        if (!PIXI.utils.isWebGLSupported()) {
+            type = "canvas"
+        }
+
+        PIXI.utils.sayHello(type)
+
+        //Create a Pixi Application
+        let app = new PIXI.Application({ width: 600, height: 600 });
+
+        //Add the canvas that Pixi automatically created for you to the HTML document
+        document.body.appendChild(app.view);
+        app.renderer.backgroundColor = 0x1099bb;
+
+
+        const container = new PIXI.Container();
+
+        app.stage.addChild(container);
+
+        var img = new Image();
+        img.src = 'bunny.png';
+        var base = new PIXI.BaseTexture(img);
+        const texture = PIXI.Texture.from(base);
+
+        // Create a 5x5 grid of bunnies
+        for (let i = 0; i < 25; i++) {
+            const bunny = new PIXI.Sprite(texture);
+            bunny.anchor.set(0.5);
+            bunny.x = (i % 5) * 40;
+            bunny.y = Math.floor(i / 5) * 40;
+            container.addChild(bunny);
+        }
+
+        // Move container to the center
+        container.x = app.screen.width / 2;
+        container.y = app.screen.height / 2;
+
+        // Center bunny sprite in local container coordinates
+        container.pivot.x = container.width / 2;
+        container.pivot.y = container.height / 2;
+
+        app.ticker.speed = -2;
+
+
+        // Listen for animate update
+        app.ticker.add((delta) => {
+            // rotate the container!
+            // use delta to create frame-independent transform
+            container.rotation -= 0.01 * delta;
+        });
+
+
+        //load an image and run the `setup` function when it's done
+        // PIXI.loader
+        //     .add("spritesheet.png")
+        //     .load(setup);
+
+        // //This `setup` function will run when the image has loaded
+        // function setup() {
+
+        //     //Create the cat sprite
+        //     // let cat = new PIXI.Sprite(PIXI.loader.resources["spritesheet.png"].texture));
+        //     let cat = new PIXI.Sprite(PIXI.loader.resources["spritesheet.png"].texture["1.png"]);
+
+        //     //Add the cat to the stage
+        //     app.stage.addChild(cat);
+        // }
+
+        function setup() {
+
+            //Create the `tileset` sprite from the texture
+            let texture = PIXI.utils.TextureCache["spritesheet.png"];
+
+            //Create a rectangle object that defines the position and
+            //size of the sub-image you want to extract from the texture
+            //(`Rectangle` is an alias for `PIXI.Rectangle`)
+            let rectangle = new PIXI.Rectangle(50, 50, 349, 102);
+
+            //Tell the texture to use that rectangular section
+            texture.frame = rectangle;
+
+            //Create the sprite from the texture
+            let rocket = new PIXI.Sprite(texture);
+
+            //Position the rocket sprite on the canvas
+            rocket.x = 0;
+            rocket.y = 0;
+
+            //Add the rocket to the stage
+            app.stage.addChild(rocket);
+
+            //Render the stage   
+            app.renderer.render(app.stage);
+        }
+
+    </script>
+</body>
+
+</html>

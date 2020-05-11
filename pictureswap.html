@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+</head>
+<!-- <script src="pixi.js"></script> -->
+<script
+    src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.3/pixi.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/plugins/PixiPlugin.min.js'></script>
+
+<body>
+    <script type="text/javascript">
+        const app = new PIXI.Application();
+        document.body.appendChild(app.view);
+
+        let bol = false;
+
+        // create a texture from an image path
+        const one = PIXI.Texture.from('1.png');
+
+        // create a second texture
+        const two = PIXI.Texture.from('1_AMAL_RED.png');
+
+        // create a texture from an image path
+        const three = PIXI.Texture.from('1_RED.png');
+
+
+        // create a new Sprite using the texture
+        const dude = new PIXI.Sprite(one);
+
+        // center the sprites anchor point
+        dude.anchor.set(0.5);
+
+        // move the sprite to the center of the screen
+        dude.x = app.screen.width / 2;
+        dude.y = app.screen.height / 2;
+
+        app.stage.addChild(dude);
+
+        // make the sprite interactive
+        dude.interactive = true;
+        dude.buttonMode = true;
+
+        i = 1;
+
+        dude.speed = 2 + Math.random() * 2;
+
+        // dude.on('pointertap', () => {
+        //     bol = i++ / 3;
+        //     if (bol == 3) {
+        //         dude.texture = three;
+        //     } else if (bol == 2) {
+        //         dude.texture = two;
+        //     } else {
+        //         dude.texture = one
+        //     }
+        // });
+
+        // app.ticker.add(() => {
+        //     //     // just for fun, let's rotate mr rabbit a little
+        //     //     dude.rotation += 0.01;
+        //     // ++i;
+        //     // bol = i % 3;
+
+        // if (dude.texture == one) {
+        //     dude.texture = three;
+        // } else if (dude.texture == three) {
+        //     dude.texture = two;
+        // } else {
+        //     dude.texture = one
+        // }
+        // });
+
+        var timeline = new TimelineMax({ paused: false, repeat: -1 });
+
+        // Animating using GSAP
+        timeline.to(dude, 1, {
+            left: 1500,
+            onComplete: function () {
+                i++;
+                bol = i % 3;
+                console.log(bol);
+                // dude.texture = three;
+                if (bol == 2) {
+                    dude.texture = three;
+                    i++;
+                } else if (bol == 0) {
+                    dude.texture = two;
+                    i++;
+                } else {
+                    dude.texture = one
+                    i++;
+                }
+            }
+        });
+        // TweenMax.to(dude, 3, {
+        //     pixi: {
+        //         x: 200,
+        //         scaleX: 15
+        //     },
+        //     yoyo: true,
+        //     repeat: -1
+        // });
+
+    </script>
+</body>
+
+</html>
